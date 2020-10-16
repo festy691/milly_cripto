@@ -26,7 +26,7 @@ module.exports =  {
                     res.status(200).send("class created");
                 }
                 else{
-                    res.status(400).send("An error occured while trying to create class");
+                    res.status(400).send("An error occured while trying to create class"+err);
                 }
             });
         } catch (err) {
