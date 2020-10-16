@@ -525,12 +525,12 @@ const sendTokenResponse = (user,status,res)=>{
 
 const emailPassword = async (options) => {
     let transporter = nodemailer.createTransport({
-        host: "server163.web-hosting.com",
-        port: 465,
+        host: `${process.env.EMAIL_HOST}`,
+        port: `${process.env.EMAIL_PORT}`,
         secure: true, // true for 465, false for other ports
         auth: {
-        user: 'support@sucasha.com', // generated ethereal user
-        pass: 'olusucasha', // generated ethereal password
+        user: `${process.env.EMAIL_USER}`, // generated ethereal user
+        pass: `${process.env.EMAIL_PASSWORD}`, // generated ethereal password
         },
         tls:{
             rejectUnauthorized :false
@@ -539,7 +539,7 @@ const emailPassword = async (options) => {
     
     // send mail with defined transport object
     const message = {
-        from: 'Email verification <support@sucasha.com>', // sender address
+        from: `${process.env.EMAIL_FROM} <${process.env.EMAIL_USER}>`, // sender address
         to: options.email, // list of receivers
         subject: options.subject, // Subject line
         html: options.message
