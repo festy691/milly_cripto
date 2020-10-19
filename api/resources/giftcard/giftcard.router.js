@@ -13,3 +13,6 @@ giftcardRouter.route('/:id')
 .put(protect, authorize('admin'), giftcardController.updateGiftcard)
 .get(giftcardController.getOneGiftcard)
 .delete(protect, authorize('admin'), giftcardController.deleteGiftcard);
+
+giftcardRouter.route('/class/:id')
+.get(giftcardController.getCatGiftcard);

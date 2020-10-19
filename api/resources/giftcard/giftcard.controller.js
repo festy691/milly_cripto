@@ -97,6 +97,21 @@ module.exports =  {
         }
     },
 
+    async getCatGiftcard(req,res){
+        try {
+            GiftcardModel.find({class:req.params.id},(err, docs)=>{
+                if(!err){
+                    res.status(200).send(docs);
+                }
+                else{
+                    res.status(400).send("An error occured while loading all giftcards");
+                }
+            });
+        } catch (err) {
+            res.status(400).send("Something went wrong");
+        }
+    },
+
     async deleteGiftcard(req,res){
       try {
         ClassModel.findOne(({_id: req.params.id}),(err, doc)=>{

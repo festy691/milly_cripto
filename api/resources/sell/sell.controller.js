@@ -17,10 +17,11 @@ module.exports =  {
                 sell.image = await uploadImage(req.file);
             }
 
-            if (!req.file || !data.user)
+            if (!req.file || !data.user || !data.giftcard)
                 return res.status(400).send("image and user is required");
             
             sell.user = data.user;
+            sell.giftcard = data.giftcard;
 
             sell.save((err, docs)=>{
                 if (!err){
@@ -85,7 +86,7 @@ module.exports =  {
                 else{
                     res.status(400).send("An error has occured "+err);
                 }
-            });
+            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email').populate('giftcard', '_id name price');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
@@ -100,7 +101,7 @@ module.exports =  {
                 else{
                     res.status(400).send("An error occured "+err);
                 }
-            });
+            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email').populate('giftcard', '_id name price');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
@@ -115,7 +116,7 @@ module.exports =  {
                 else{
                     res.status(400).send("An error occured "+err);
                 }
-            });
+            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email').populate('giftcard', '_id name price');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
