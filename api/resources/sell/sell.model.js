@@ -10,11 +10,6 @@ var SaleSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    giftcard : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Giftcards',
-        required : true
-    },
     status : {
         type : String,
         default : 'pending',
