@@ -27,7 +27,7 @@ module.exports =  {
                     res.status(200).send("Submitted, awaiting confirmation");
                 }
                 else{
-                    res.status(400).send("An error occured while trying to submit payment");
+                    res.status(400).send("An error occured while trying to submit payment "+err);
                 }
             });
         } catch (err) {
