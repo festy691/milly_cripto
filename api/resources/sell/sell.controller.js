@@ -17,6 +17,12 @@ module.exports =  {
             if (req.file){
                 image = await uploadImage(req.file);
             }
+            else {
+                return res.status(400).send("image is required");
+            }
+
+            if(!image)
+                return res.status(400).send("image is null");
 
             if (!req.file || !data.user)
                 return res.status(400).send("image and user is required");
