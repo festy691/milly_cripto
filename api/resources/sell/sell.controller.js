@@ -12,17 +12,19 @@ module.exports =  {
             var sell = new SellModel();
 
             var data = req.body;
+            var image = null;
 
             if (req.file){
-                sell.image = await uploadImage(req.file);
+                image = await uploadImage(req.file);
             }
 
             if (!req.file || !data.user)
                 return res.status(400).send("image and user is required");
             
             sell.user = data.user;
+            sell.image = image;
 
-            sell.save((err, docs)=>{
+            await sell.save((err, docs)=>{
                 if (!err){
                     res.status(200).send("Submitted, awaiting confirmation");
                 }
