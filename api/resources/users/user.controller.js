@@ -43,6 +43,8 @@ module.exports = {
                         user.phonenumber = phonenumber;
                         user.verificationExpire = Date.now() + 10 * 60 * 1000;
                         user.verificationCode = verificationId;
+
+                        if(data.referer) user.referer = data.referer;
     
                         //HASHING THE password with bcryptjs
                         const salt = await bcriptjs.genSalt(10);
@@ -186,7 +188,7 @@ module.exports = {
                 else{
                     res.status(400).send('An error has occured');
                 }
-            });
+            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
         } catch (err) {
             res.status(400).send('An error has occured');
         }

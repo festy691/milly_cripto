@@ -5,6 +5,7 @@ const giftcardRouter = require('./resources/giftcard');
 const cryptocurrencyRouter = require('./resources/cryptocurrency');
 const classRouter = require('./resources/class');
 const saleRouter = require('./resources/sell');
+const airtimeRouter = require('./resources/airtime');
 
 const restRouter = express.Router();
 
@@ -16,3 +17,4 @@ restRouter.use('/giftcards', giftcardRouter);
 restRouter.use('/cryptocurrencies', cryptocurrencyRouter);
 restRouter.use('/sales', saleRouter);
 restRouter.use('/class', classRouter);
+restRouter.use('/airtimes', airtimeRouter);

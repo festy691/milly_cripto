@@ -57,6 +57,10 @@ var UserSchema = new mongoose.Schema({
         default : 'user',
         enum: ['user','admin']
     },
+    referer : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Users',
+    },
     usage : {
         type : Number,
         default : 1,
