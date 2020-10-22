@@ -34,7 +34,8 @@ var UserSchema = new mongoose.Schema({
         type : String
     },
     walletbalance : {
-        type : Number
+        type : Number,
+        default: 0
     },
     password : {
         type : String,
@@ -55,6 +56,10 @@ var UserSchema = new mongoose.Schema({
         type : String,
         default : 'user',
         enum: ['user','admin']
+    },
+    usage : {
+        type : Number,
+        default : 1,
     },
     verified : {
         type : Boolean,
