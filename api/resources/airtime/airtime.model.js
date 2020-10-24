@@ -23,6 +23,11 @@ var AirtimeSchema = new mongoose.Schema({
         default : 'pending',
         enum: ['pending','processing','completed','rejected']
     },
+    name : {
+        type : String,
+        enum: ['Airtime','Data'],
+        required: true
+    },
     date : {
         type : Date,
         default : Date.now()

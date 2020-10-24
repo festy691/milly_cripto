@@ -22,15 +22,16 @@ module.exports =  {
             }
 
             if(!image)
-                return res.status(400).send("image is null");
+                return res.status(400).send("Please send wallet image");
 
-            if (!req.file || !data.user || !data.phonenumber || !data.amount)
-                return res.status(400).send("image and user is required");
+            if (!req.file || !data.user || !data.phonenumber || !data.amount || !data.name)
+                return res.status(400).send("All fields are required");
             
             sell.user = data.user;
             sell.phonenumber = data.phonenumber;
             sell.amount = data.amount;
             sell.image = image;
+            sell.name = data.name;
 
             await sell.save((err, docs)=>{
                 if (!err){
