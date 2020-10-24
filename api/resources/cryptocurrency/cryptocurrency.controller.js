@@ -16,12 +16,13 @@ module.exports =  {
                 cryptocurrency.image = await uploadImage(req.file);
             }
 
-            if (!data.name || !data.priceDollar || !data.priceNaira || !req.file)
-                return res.status(400).send("cryptocurrency type, price in dollar, price in naira and image are required");
+            if (!data.name || !data.priceDollar || !data.priceNaira || !data.walletAddress || !req.file)
+                return res.status(400).send("cryptocurrency type, price in dollar, price in naira, wallet address and image are required");
             
             cryptocurrency.name = data.name;
             cryptocurrency.priceDollar = data.priceDollar;
             cryptocurrency.priceNaira = data.priceNaira;
+            cryptocurrency.walletAddress = data.walletAddress;
 
             cryptocurrency.save((err, docs)=>{
                 if (!err){
@@ -45,7 +46,7 @@ module.exports =  {
             if (!cryptocurrency) 
                 return res.status(404).send("cryptocurrency not found");
 
-            if (!data.name && !data.priceDollar && !data.priceNaira) 
+            if (!data.name && !data.priceDollar && !data.priceNaira &&!data.walletAddress) 
                 return res.status(404).send("Nothing to update");
 
             if (data.name){
@@ -56,6 +57,9 @@ module.exports =  {
             }
             if (data.priceNaira){
                 cryptocurrency.priceNaira = data.priceNaira;
+            }
+            if(data.walletAddress){
+                cryptocurrency.walletAddress = data.walletAddress;
             }
 
             cryptocurrency.save((err, docs)=>{

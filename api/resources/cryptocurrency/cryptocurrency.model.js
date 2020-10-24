@@ -17,6 +17,10 @@ var CryptoSchema = new mongoose.Schema({
         type : Number,
         required : true
     },
+    walletAddress : {
+        type : String,
+        required : true
+    },
 });
 
 module.exports = mongoose.model("Cryptos", CryptoSchema);

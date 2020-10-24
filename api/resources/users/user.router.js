@@ -21,6 +21,10 @@ userRouter.route('/:id')
 
 userRouter.route('/login').post(userController.loginUser);
 
+userRouter.route('/cashout').post(protect, authorize('admin'), userController.cashout);
+
+userRouter.route('/credit/:id').put(protect, authorize('admin'), userController.addMoney);
+
 userRouter.route('/logout').post(protect,userController.logoutUser);
 
 userRouter.route('/updatepassword/:id').put(protect,userController.updatePassword);

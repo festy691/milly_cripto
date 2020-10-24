@@ -161,6 +161,76 @@ module.exports = {
         }
     },
     
+    async addMoney(req,res){
+        try {
+            await UserModel.findOne(({_id:req.params.id}),(err,doc)=>{
+                if (!err){
+                    if(!doc)
+                        return res.status(404).send('User not found');
+
+                    else {
+                        var data = req.body;
+
+                        if(!data.amount)
+                            return res.status(400).send('Please add amount to add');
+    
+                        async function updateThisData(){
+                            
+                            if (data.amount){
+                                doc.walletbalance = doc.walletbalance + data.amount;
+                            }
+    
+                            await doc.save(({_id:req.params.id}),(err, docs)=>{
+                                if (!err){
+                                    res.status(200).send("User credicted");
+                                }
+                                else{
+                                    res.status(400).send('Validation error, user not credicted');
+                                }
+                            });
+                        }
+                        updateThisData();
+                    }
+                    
+                }
+            });
+        } catch (err) {
+            res.status(400).send('An error occured');
+        }
+    },
+    
+    async cashout(req,res){
+        try {
+            await UserModel.findOne(({_id:req.params.id}),(err,doc)=>{
+                if (!err){
+                    if(!doc)
+                        return res.status(404).send('User not found');
+
+                    else {
+    
+                        async function updateThisData(){
+                            
+                            doc.walletbalance = 0.0;
+    
+                            await doc.save(({_id:req.params.id}),(err, docs)=>{
+                                if (!err){
+                                    res.status(200).send("User cashed out");
+                                }
+                                else{
+                                    res.status(400).send('Validation error, user not cashed out');
+                                }
+                            });
+                        }
+                        updateThisData();
+                    }
+                    
+                }
+            });
+        } catch (err) {
+            res.status(400).send('An error occured');
+        }
+    },
+
     async getSingleUser(req,res){
         try {
             await UserModel.findOne(({_id:req.params.id}),(err,doc)=>{
