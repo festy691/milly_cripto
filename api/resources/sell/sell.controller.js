@@ -32,14 +32,14 @@ module.exports =  {
 
             await sell.save((err, docs)=>{
                 if (!err){
-                    res.status(200).send("Submitted, awaiting confirmation");
+                    return res.status(200).send("Submitted, awaiting confirmation");
                 }
                 else{
-                    res.status(400).send("An error occured while trying to submit payment "+err);
+                    return res.status(400).send("An error occured while trying to submit payment "+err);
                 }
             });
         } catch (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
     },
 
@@ -64,21 +64,21 @@ module.exports =  {
 
                         doc.save((err, docs)=>{
                             if (!err){
-                                res.status(200).send(`Added to ${data.status} list`);
+                                return res.status(200).send(`Added to ${data.status} list`);
                             }
                             else{
-                                res.status(400).send("An error occured while trying to update item in database");
+                                return res.status(400).send("An error occured while trying to update item in database");
                             }
                         });
                     }
                     updateThis();
                 }
                 else{
-                    res.status(400).send("An error occured while locating item");
+                    return res.status(400).send("An error occured while locating item");
                 }
             });
         } catch (err) {
-            res.status(400).send("Something went wrong");
+            return res.status(400).send("Something went wrong");
         }
     },
 
@@ -88,29 +88,66 @@ module.exports =  {
                 if(!err){
                     if (!doc) 
                     return res.status(404).send("not found");
-                    res.status(200).send(doc);
+                    return res.status(200).send(doc);
                 }
                 else{
-                    res.status(400).send("An error has occured "+err);
+                    return res.status(400).send("An error has occured "+err);
                 }
-            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
+            }).populate('user', '_id firstname referer lastname accountname accountnumber bankname phonenumber email date');
         } catch (err) {
-            res.status(400).send("Something went wrong");
+            return res.status(400).send("Something went wrong");
         }
     },
 
     async getAllSales(req,res){
         try {
-            SellModel.find((err, docs)=>{
+            
+            const {page,perPage} = req.query;
+            const options = {
+                page: parseInt(page,10) || 1,
+                limit: parseInt(perPage,10) || 10,
+                populate: {
+                    path: 'user',
+                    select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
+                }
+            }
+            SellModel.paginate({},options,(err, docs)=>{
                 if(!err){
-                    res.status(200).send(docs);
+                    return res.status(200).send(docs);
                 }
                 else{
-                    res.status(400).send("An error occured "+err);
+                    return res.status(400).send("Validation error "+err);
                 }
-            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
+            });
         } catch (err) {
-            res.status(400).send("Something went wrong");
+            return res.status(400).send("Something went wrong");
+        }
+    },
+
+    async getsalesStatus(req,res){
+        try {
+
+            const {page,perPage} = req.query;
+            const options = {
+                page: parseInt(page,10) || 1,
+                limit: parseInt(perPage,10) || 10,
+                populate: {
+                    path: 'user',
+                    select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
+                }
+            }
+            const {status} = req.params;
+
+            SellModel.paginate({status : status},options,(err, docs)=>{
+                if(!err){
+                    return res.status(200).send(docs);
+                }
+                else{
+                    return res.status(400).send("Validation error "+err);
+                }
+            });
+        } catch (err) {
+            return res.status(400).send("Unknown error: "+err);
         }
     },
 
@@ -118,14 +155,14 @@ module.exports =  {
         try {
             SellModel.find(({user:req.params.id}),(err, docs)=>{
                 if(!err){
-                    res.status(200).send(docs);
+                    return res.status(200).send(docs);
                 }
                 else{
-                    res.status(400).send("An error occured "+err);
+                    return res.status(400).send("An error occured "+err);
                 }
             }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
         } catch (err) {
-            res.status(400).send("Something went wrong");
+            return res.status(400).send("Something went wrong");
         }
     },
 
@@ -141,19 +178,19 @@ module.exports =  {
                         if (doc.image) destroy(nameFromUri(doc.image)).catch((result)=>{
                             console.log(result);
                         });
-                        res.status(200).send("Item deleted");
+                        return res.status(200).send("Item deleted");
                     }
                     else{
-                        res.status(400).send("An error occured while trying to delete item");
+                        return res.status(400).send("An error occured while trying to delete item");
                     }
                 });
             }
             else{
-                res.status(400).send("An error occured while locating item");
+                return res.status(400).send("An error occured while locating item");
             }
         });
       } catch (err) {
-        res.status(400).send("Something went wrong");
+        return res.status(400).send("Something went wrong");
       }  
     }
 }

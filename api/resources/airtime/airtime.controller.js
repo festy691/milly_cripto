@@ -104,16 +104,53 @@ module.exports =  {
 
     async getAllSales(req,res){
         try {
-            AirtimeModel.find((err, docs)=>{
+            
+            const {page,perPage} = req.query;
+            const options = {
+                page: parseInt(page,10) || 1,
+                limit: parseInt(perPage,10) || 10,
+                populate: {
+                    path: 'user',
+                    select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
+                }
+            }
+            AirtimeModel.paginate({},options,(err, docs)=>{
                 if(!err){
-                    res.status(200).send(docs);
+                    return res.status(200).send(docs);
                 }
                 else{
-                    res.status(400).send("An error occured "+err);
+                    return res.status(400).send("Validation error "+err);
                 }
-            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
+            });
         } catch (err) {
-            res.status(400).send("Something went wrong");
+            return res.status(400).send("Something went wrong");
+        }
+    },
+
+    async getsalesStatus(req,res){
+        try {
+
+            const {page,perPage} = req.query;
+            const options = {
+                page: parseInt(page,10) || 1,
+                limit: parseInt(perPage,10) || 10,
+                populate: {
+                    path: 'user',
+                    select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
+                }
+            }
+            const {status} = req.params;
+
+            AirtimeModel.paginate({status : status},options,(err, docs)=>{
+                if(!err){
+                    return res.status(200).send(docs);
+                }
+                else{
+                    return res.status(400).send("Validation error "+err);
+                }
+            });
+        } catch (err) {
+            return res.status(400).send("Unknown error: "+err);
         }
     },
 

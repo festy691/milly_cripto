@@ -17,3 +17,6 @@ airtimeRouter.route('/:id')
 .put(protect, authorize('admin'), upload.single('image'), airtimeController.updateSale)
 .get(protect, airtimeController.getOneSale)
 .delete(protect, airtimeController.deleteSale);
+
+airtimeRouter.route('/search/:status')
+.get(protect, authorize('admin'), airtimeController.getsalesStatus);

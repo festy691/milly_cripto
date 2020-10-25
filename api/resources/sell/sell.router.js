@@ -17,3 +17,6 @@ saleRouter.route('/:id')
 .put(protect, authorize('admin'), upload.single('image'), saleController.updateSale)
 .get(protect, saleController.getOneSale)
 .delete(protect, saleController.deleteSale);
+
+saleRouter.route('/search/:status')
+.get(protect, authorize('admin'), saleController.getsalesStatus);

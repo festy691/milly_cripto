@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongosePaginate = require('mongoose-paginate');
 
 var AirtimeSchema = new mongoose.Schema({
     user : {
@@ -34,4 +35,5 @@ var AirtimeSchema = new mongoose.Schema({
     },
 });
 
+AirtimeSchema.plugin(mongosePaginate);
 module.exports = mongoose.model("Airtimes", AirtimeSchema);
