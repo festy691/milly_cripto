@@ -243,7 +243,7 @@ module.exports = {
                 else{
                     res.status(400).send('User not found');
                 }
-            });
+            }).populate('referer', '_id firstname referer lastname accountname accountnumber bankname phonenumber email date');
         } catch (err) {
             res.status(400).send('An error has occured');
         }
@@ -251,14 +251,23 @@ module.exports = {
     
     async getAllUsers(req,res){
         try {
-            await UserModel.find((err,docs)=>{
+            const {page,perPage} = req.query;
+            const options = {
+                page: parseInt(page,10) || 1,
+                limit: parseInt(perPage,10) || 10,
+                populate: {
+                    path: 'referer',
+                    select: '_id firstname lastname accountname accountnumber bankname phonenumber email'
+                }
+            }
+            await UserModel.paginate({},options,(err,docs)=>{
                 if(!err){
                     res.status(200).send(docs);
                 }
                 else{
                     res.status(400).send('An error has occured');
                 }
-            }).populate('user', '_id firstname lastname accountname accountnumber bankname phonenumber email');
+            });
         } catch (err) {
             res.status(400).send('An error has occured');
         }
