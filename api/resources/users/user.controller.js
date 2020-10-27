@@ -258,7 +258,8 @@ module.exports = {
                 populate: {
                     path: 'referer',
                     select: '_id firstname lastname accountname accountnumber bankname phonenumber email'
-                }
+                },
+                sort: {date: -1}
             }
             await UserModel.paginate({},options,(err,docs)=>{
                 if(!err){

@@ -109,7 +109,8 @@ module.exports =  {
                 populate: {
                     path: 'user',
                     select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
-                }
+                },
+                sort: {date: -1}
             }
             SellModel.paginate({},options,(err, docs)=>{
                 if(!err){
@@ -134,7 +135,8 @@ module.exports =  {
                 populate: {
                     path: 'user',
                     select: '_id firstname referer lastname accountname accountnumber bankname phonenumber email date'
-                }
+                },
+                sort: {date: -1}
             }
             const {status} = req.params;
 
@@ -153,7 +155,7 @@ module.exports =  {
 
     async getAllMine(req,res){
         try {
-            SellModel.find(({user:req.params.id}),(err, docs)=>{
+            SellModel.find(({user:req.params.id}),null,{sort: {date: -1}},(err, docs)=>{
                 if(!err){
                     return res.status(200).send(docs);
                 }
