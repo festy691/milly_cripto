@@ -111,7 +111,7 @@ module.exports =  {
 
     async deleteCrypto(req,res){
       try {
-        ClassModel.findOne(({_id: req.params.id}),(err, doc)=>{
+        CryptoModel.findOne(({_id: req.params.id}),(err, doc)=>{
             if(!err){
                 if (!doc) 
                 return res.status(404).send("cryptocurrency not found");
@@ -121,7 +121,7 @@ module.exports =  {
                         if (doc.image) destroy(nameFromUri(doc.image)).catch((result)=>{
                             console.log(result);
                         });
-                        res.status(200).send("Giftcard deleted");
+                        res.status(200).send("cryptocurrency deleted");
                     }
                     else{
                         res.status(400).send("An error occured while trying to delete cryptocurrency");
@@ -133,7 +133,7 @@ module.exports =  {
             }
         });
       } catch (err) {
-        res.status(400).send("Something went wrong");
+        res.status(400).send("Something went wrong"+err);
       }  
     }
 }
