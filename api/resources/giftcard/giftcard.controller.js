@@ -76,7 +76,7 @@ module.exports =  {
                 else{
                     res.status(400).send("Error, while finding giftcard");
                 }
-            });
+            }).populate('class', '_id name image');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
@@ -91,7 +91,7 @@ module.exports =  {
                 else{
                     res.status(400).send("An error occured while loading all giftcards");
                 }
-            });
+            }).populate('class', '_id name image');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
@@ -106,7 +106,7 @@ module.exports =  {
                 else{
                     res.status(400).send("An error occured while loading all giftcards");
                 }
-            });
+            }).populate('class', '_id name image');
         } catch (err) {
             res.status(400).send("Something went wrong");
         }
