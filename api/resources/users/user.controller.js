@@ -181,12 +181,12 @@ module.exports = {
                             
                             doc.active = active;
     
-                            await doc.save(({_id:req.params.id}),(err, docs)=>{
+                            await doc.save({validateBeforeSave: false},(err, docs)=>{
                                 if (!err){
                                     res.status(200).send("User activity updated");
                                 }
                                 else{
-                                    res.status(400).send('Validation error, user not updated');
+                                    res.status(400).send(err);
                                 }
                             });
                         }
@@ -251,7 +251,7 @@ module.exports = {
                             
                             doc.walletbalance = 0.0;
     
-                            await doc.save(({_id:req.params.id}),(err, docs)=>{
+                            await doc.save((err, docs)=>{
                                 if (!err){
                                     res.status(200).send("User cashed out");
                                 }
@@ -405,7 +405,7 @@ module.exports = {
                         const salt = await bcriptjs.genSalt(10);
                         const hashedPassword = await bcriptjs.hash(data.newPassword,salt);
                         doc.password = hashedPassword;
-                        await doc.save(({_id:req.params.id}),(err, docs)=>{
+                        await doc.save((err, docs)=>{
                             if (!err){
                                 res.status(200).send("Password updated");
                             }
