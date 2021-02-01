@@ -179,7 +179,7 @@ module.exports = {
     
                         async function updateThisData(){
                             
-                            doc.active = active;
+                            doc.active = data.active;
     
                             await doc.save({validateBeforeSave: false},(err, docs)=>{
                                 if (!err){
