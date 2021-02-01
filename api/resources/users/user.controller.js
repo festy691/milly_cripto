@@ -171,7 +171,7 @@ module.exports = {
                     else {
                         var data = req.body;
 
-                        if(!data.active)
+                        if(data.active === null)
                             return res.status(400).send('active cannot be null');
 
                         if (data.active !== true && data.active !== false)
