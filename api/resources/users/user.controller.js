@@ -160,7 +160,46 @@ module.exports = {
             res.status(400).send('Something went wrong');
         }
     },
+
+    async suspendUser(req,res){
+        try {
+            await UserModel.findOne(({_id:req.params.id}),(err,doc)=>{
+                if (!err){
+                    if(!doc)
+                        return res.status(404).send('User not found');
+
+                    else {
+                        var data = req.body;
+
+                        if(!data.active)
+                            return res.status(400).send('active cannot be null');
+
+                        if (data.active !== true && data.active !== false)
+                            return res.status(400).send('active can only take boolean values');
     
+                        async function updateThisData(){
+                            
+                            doc.active = active;
+    
+                            await doc.save(({_id:req.params.id}),(err, docs)=>{
+                                if (!err){
+                                    res.status(200).send("User activity updated");
+                                }
+                                else{
+                                    res.status(400).send('Validation error, user not updated');
+                                }
+                            });
+                        }
+                        updateThisData();
+                    }
+                    
+                }
+            });
+        } catch (err) {
+            res.status(400).send(err);
+        }
+    },
+
     async addMoney(req,res){
         try {
             await UserModel.findOne(({_id:req.params.id}),(err,doc)=>{
@@ -330,6 +369,7 @@ module.exports = {
 
                         if(!doc.verified) return res.status(400).send('Your Account has not been verified, verify to login');
 
+                        if(!doc.active) return res.status(400).send('Your Account has been suspended due to breach in policy');
                         // res.header('auth-token', token).send(token);
                         sendTokenResponse(doc,200,res);
                     }
