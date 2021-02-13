@@ -6,6 +6,8 @@ var resizeImage = require('resize-image');
 
 const SellModel = require("./sell.model");
 
+let globalVersion = 0;
+
 module.exports =  {
     async createSale(req,res){
         try {
@@ -32,10 +34,11 @@ module.exports =  {
 
             await sell.save((err, docs)=>{
                 if (!err){
+                    globalVersion = globalVersion + 1;
                     return res.status(200).send("Submitted, awaiting confirmation");
                 }
                 else{
-                    return res.status(400).send("An error occured while trying to submit payment "+err);
+                    return res.status(400).send(err);
                 }
             });
         } catch (err) {
@@ -194,7 +197,26 @@ module.exports =  {
       } catch (err) {
         return res.status(400).send("Something went wrong");
       }  
+    },
+
+    eventsHandler(req, res) {
+        // Mandatory headers and http status to keep connection open
+        let localVersion = 0;
+        const headers = {
+          'Content-Type': 'text/event-stream',
+          'Connection': 'keep-alive',
+          'Cache-Control': 'no-cache'
+        };
+        res.writeHead(200, headers);
+        // After client opens connection send all nests as string
+        setInterval(function(){
+            if (localVersion < globalVersion){
+                const data = {data: 'New sales request'};
+                res.write(data);
+            }
+        },1000);
     }
+    
 }
 
 function nameFromUri(myurl){

@@ -20,3 +20,6 @@ saleRouter.route('/:id')
 
 saleRouter.route('/search/:status')
 .get(protect, authorize('admin'), saleController.getsalesStatus);
+
+saleRouter.route('/sse/notification')
+.get(protect, authorize('admin'), saleController.eventsHandler);
